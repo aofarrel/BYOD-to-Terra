@@ -43,7 +43,7 @@ import google.cloud.storage
 
 # Don't forgot the quotation marks!
 SUBPREFIX="/test_files/"
-TABLE_NAME="byod"
+TABLE_NAME="byod_with_cat_photos"
 
 
 # In rare circumstances you may need to escape the slashes in your SUBPREFIX variable. If you run into errors, follow this style of formating: \\/test_files\\/
@@ -70,7 +70,7 @@ try:
         raise
     else:
         print("Firecloud has found your workspace!")
-        directory = BUCKET + SUBDIRECTORY
+        directory = BUCKET + SUBPREFIX
 except NameError:
     print("Caught a NameError exception. This may mean the kernal was restarted or you didn't run ",
           "the cells above. Try running the cells above again.")
@@ -85,7 +85,7 @@ storage_client = google.cloud.storage.Client()
 # In[ ]:
 
 
-get_ipython().system('gsutil ls $prefix')
+get_ipython().system('gsutil ls $directory')
 
 
 # If you get a CommandError exception here, it may be because your SUBPREFIX is for a psuedo-folder that doesn't actually exist. Try `!gsutil ls $bucket` and make sure the directory you're looking for actally exists. If it's not there, run the Folder-Maker notebook first.
@@ -96,7 +96,7 @@ get_ipython().system('gsutil ls $prefix')
 # In[ ]:
 
 
-get_ipython().system('gsutil rm $prefix"placeholder"')
+get_ipython().system('gsutil rm $SUBPREFIX"placeholder"')
 
 
 # ## Do magic to create a TSV file
@@ -104,11 +104,29 @@ get_ipython().system('gsutil rm $prefix"placeholder"')
 # In[ ]:
 
 
-with open('final.tsv', 'w') as f:
-    f.write(f"entity:{TABLE_NAME}_id\tfile_location\n")
-    for file_path in storage_client.list_blobs(prefix_no_gs, prefix="test_files"):
-        s = file_path.name
-        f.write(f'{s.split("/")[-1]}\t{bucket}/{s}\n')
+# Append contents.txt with ls
+get_ipython().system('gsutil ls $directory > contentlocations.txt')
+# Append each line with their file names + full address 
+# of where the files live in your google bucket
+get_ipython().system("cat contentlocations.txt | sed 's@.*/@@' > filenames.txt")
+get_ipython().system('paste filenames.txt contentlocations.txt > combined.txt')
+# Set up header that Terra requires for data tables
+# Simply doing this in Python, ie, 
+#headerstring = "entity:" + TABLE_NAME + "_id\tfile_location"
+# results in the tab being converted to a space. Not sure why
+get_ipython().system('touch temp.txt')
+get_ipython().system('echo "entity:$TABLE_NAME""_id\\tfile_location" >> temp.txt')
+get_ipython().system('cat temp.txt combined.txt > final.tsv')
+# Clean up your directory
+get_ipython().system('rm filenames.txt contentlocations.txt temp.txt')
+
+
+#prefix_no_gs = BUCKET[5:]
+#with open('final.tsv', 'w') as f:
+    #f.write(f"entity:{TABLE_NAME}_id\tfile_location\n")
+    #for file_path in storage_client.list_blobs(prefix_no_gs, prefix=SUBPREFIX):
+        #s = file_path.name
+        #f.write(f'{s.split("/")[-1]}\t{BUCKET}/{s}\n')
 
 
 # Again, if you get a CommandError exception, there is probably a problem with your SUBPREFIX. Make sure to fix that, or else your resulting TSV will be blank.
@@ -128,4 +146,10 @@ get_ipython().system('cat final.tsv')
 
 response = fapi.upload_entities_tsv(BILLING_PROJECT_ID, WORKSPACE, "final.tsv", "flexible")
 fapi._check_response_code(response, 200)
+
+
+# In[ ]:
+
+
+
 
