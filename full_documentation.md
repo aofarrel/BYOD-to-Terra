@@ -66,7 +66,7 @@ In some cases, you might just be working with a few files. If so, you can skip t
 Now that your data is on the system, let's discuss how to actually use it. The route you take depends on whether you want to run a WDL workflow on your files, or to run something within a Jupyter notebook on your files.
 
 ### Situation A: WDL workflow using gs:// URI
-Using the Google Cloud Bucket address that your files now reside in, you can simply enter that address as an input into your workflow. [Terra's pipeling documentation](https://support.terra.bio/hc/en-us/articles/360026521831-Configure-a-workflow-to-process-your-data#h_d8435f57-4713-40c5-b5af-150f1872057f) explains how this is done. Remember, you can click on a file in Terra's data section to view it's full GCS address by just examining the `gsutil cp` command provided.
+Using the Google Cloud Bucket address that your files now reside in, you can simply enter that address as an input into your workflow. [Terra's pipeling documentation](https://support.terra.bio/hc/en-us/articles/360026521831-Configure-a-workflow-to-process-your-data#h_d8435f57-4713-40c5-b5af-150f1872057f) explains how this is done. Remember, you can click on a file in Terra's data section to view it's full GCS address by just examining the `gsutil cp` command provided. You will likely have to scroll to read the full address.
 
 ![Image of a file in Terra's data section with its gs URI circled in green](https://raw.githubusercontent.com/DataBiosphere/BYOD-to-Terra/anvil/getting%20file%20address.png)
 
