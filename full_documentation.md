@@ -4,7 +4,7 @@ The question of bringing your own data is a complicated one to write documentati
 
 We've decided to break down the task into two main sections: First of all, you must get your data into the system in the first place. We call this "Source-to-Bucket," refering to the movement of your files from your BYOD source into the Google Cloud Bucket of your Terra worksapce. Second, once your data is in the system, you will want to learn how to use it in either a Jupyter notebook, or a workflow. We call that part "Bucket-to-Compute."
 
-**Note:** If you wish to import your data in a Jupyter notebook to process it and then pass that output into a workflow, it is easiest to think about it as two seperate BYOD situations. The first is for getting your data into your bucket in a way that can be processed by Jupyter. The second BYOD situation is moving your Jupyter output back into your Google Bucket as the Source-to-Bucket, and setting up your data to run as an input of your workflow is the Bucket-to-Compute part.
+**Note:** If you wish to import your data in a Jupyter notebook to process it and then pass that output into a workflow, it is easiest to think about it as two seperate BYOD problems. The first is for getting your data into your bucket in a way that can be processed by Jupyter. The second is moving your Jupyter output back into your Google Bucket as the Source-to-Bucket, and setting up your data to run as an input of your workflow is the Bucket-to-Compute part.
 
 ## Before you begin
 ### Phenotypic data
@@ -21,13 +21,13 @@ Please keep in mind that any of these characters, if present in your filenames, 
 Please note the "might work" column is **not** a recommendation. The recommendation is for file names to only have the characters A-Z, a-z, 0-9, _, ., and -.
 
 ### Keeping your bucket organized
-For every Source-to-Bucket situation except for 5 and 7 (see below), you will be transferring files into your Terra workspace's data section. You may wish to keep this section organized. GCS's file system is a little bit complicated, so we have created [a quick Jupyter notebook named Folder Maker](https://github.com/DataBiosphere/BYOD-to-Terra/blob/master/Folder%20Maker.py) that you can run in Terra to create a "psuedofolder" in your Data section. 
+For every Source-to-Bucket situation except for 8 (see below), you will be transferring files into your Terra workspace's data section. You may wish to keep this section organized. GCS's file system is a little bit complicated, so we have created [a quick Jupyter notebook named Folder Maker](https://github.com/DataBiosphere/BYOD-to-Terra/blob/master/Folder%20Maker.py) that you can run in Terra to create a "psuedofolder" in your Data section. 
 
-If during the Bucket-to-Compute part of your BYOD project, you will be using one of the Jupyter notebooks provided to create a datatable, it is **strongly** recommended that you use Folder Maker, because the Bucket-to-Compute notebooks operate on all files within a given directory (or psuedofolder).
+If during the Bucket-to-Compute part of your BYOD project, you will be using one of the Jupyter notebooks provided to create a datatable, it is **strongly** recommended that you make use of psuedofolders, because the Bucket-to-Compute notebooks operate on all files within a given directory (or psuedofolder). If you do not wish to run Folder Maker and you are transferring files to your bucket via gsutil (see below), simply add the desired folder name to your `gsutil cp` command, such as `gsutil cp gs://source/file.cram gs://destination/desired_folder_name/file.cram`, to create the desired psuedofolder.
 
 ## Source-to-Bucket
 Depending on where your data is located, your Source-to-Bucket method will vary. Please see the following flow chart for details.
-![Flowchart for BYOD situations](https://raw.githubusercontent.com/DataBiosphere/BYOD-to-Terra/master/BYOD_numbered.png)
+![Flowchart for BYOD situations](https://raw.githubusercontent.com/DataBiosphere/BYOD-to-Terra/anvil/BYOD%20-%20Anvil%20numbered.png)
 
 ### Situation 1: Institute server not owned by the Broad
 If your data is on an institute server not owned by the Broad, you may be able to adapt one of the other methods presented here. Due to the range of different configurations, we can't predict what will work for every user, but we recommend first trying `gsutil cp` from your server (see Situation 3, treating the server as your local machine).
@@ -52,20 +52,17 @@ Please see ["Option 1" in this article here](https://support.terra.bio/hc/en-us/
 ### Situation 5: Notebook VM using Terra's terminal
 Please see documentation [here](https://hackmd.io/yXS65cyfTUSY8790vZzThw).
 
-### Situation 6: Gen3 data
-Terra and Gen3 have a special handoff system. A huge advantage of this is that the result is your data being imported in the form of dataframes, rather than just placed in your Google Bucket, therefore bypassing the Bucket-to-Compute side of the BYOD problem entirely (unless you wish to manipulate that data in some way before running it in a workspace, such as editing it with a Jupyter notebook). To learn more about this process, [see Terra's documentation here.](https://support.terra.bio/hc/en-us/articles/360038087312-Understanding-and-using-Gen3-data-in-Terra)
-
-### Situation 7: Google Cloud Bucket, using gsutil
-Similiar to Situation 5, you can use Terra's terminal to move files around. This time, gsutil cp can be put to work moving files between a bucket you have downloader access to and your Terra workspace.
+### Situation 6: Google Cloud Bucket, using gsutil
+Similiar to Situation 5, you can use Terra's terminal to move files around. This time, `gsutil cp` can be put to work moving files between a bucket you have downloader access to and your Terra workspace.
 
 Note that if the GCS bucket you are transferring from is a requester pays bucket, you will need to provide your billing project ID in order to download the files. This billing project ID is the same one that you selected when making your workspace. If your billing project ID was terra-billing-test, then the resulting command would be:
 
 `gsutil -u terra-billing-test cp gs://source-bucket gs://terra-workspace`
 
-### Situation 8: Using the gs:// URI directly
-In some cases, you might just be working with a few files. In that situation, you can skip the question of Source-to-Bucket entirely and just use the gs:// URI as your workflow input [as explained in Terra's pipeling documentation](https://support.terra.bio/hc/en-us/articles/360026521831-Configure-a-workflow-to-process-your-data#h_d8435f57-4713-40c5-b5af-150f1872057f). However, if you have enough files to make typing out the inputs tedious, it may be worth your time instead following the instructions for Situation 7.
+### Situation 7: Using the gs:// URI directly
+In some cases, you might just be working with a few files. If so, you can skip the question of Source-to-Bucket entirely and just use the gs:// URI as your workflow input [as explained in Terra's pipeling documentation](https://support.terra.bio/hc/en-us/articles/360026521831-Configure-a-workflow-to-process-your-data#h_d8435f57-4713-40c5-b5af-150f1872057f). However, if you have enough files to make typing out the inputs tedious, it may be worth your time instead following the instructions for Situation 6.
 
-### Situation 9: Transfering from AWS
+### Situation 8: Transfering from AWS
 [Please see Google's documentation.](https://cloud.google.com/migrate/compute-engine/docs/4.8/how-to/migrate-aws-to-gcp/migrating-aws-vms)
 
 ## Bucket-to-Compute
