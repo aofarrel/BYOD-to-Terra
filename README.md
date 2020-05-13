@@ -14,7 +14,7 @@ For more information please see the Use Cases section below.
 # Installation
 Download the iPython notebooks and then reupload them into your Terra workspace. Unfortunately Terra does not allow automatic update of notebooks due to how Workspaces work, so you will need to redownload/reupload manually if you wish to update later.
 
-Note that Table Smasher currently REQUIRES an up-to-date copy of terra-data-utils in the same workspace, not included here as they are still in active development.
+Note that Table Smasher currently REQUIRES an up-to-date copy of terra-data-utils in the same workspace, not included here as it is still in active development.
 
 # Use Cases
 

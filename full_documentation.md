@@ -21,9 +21,9 @@ Please keep in mind that any of these characters, if present in your filenames, 
 Please note the "might work" column is **not** a recommendation. The recommendation is for file names to only have the characters A-Z, a-z, 0-9, _, ., and -.
 
 ### Keeping your bucket organized
-For every Source-to-Bucket situation except for 5 and 7 (see below), you will be transferring files into your Terra workspace's data section. You may wish to keep this section organized. GCS's file system is a little bit complicated, so we have created [a quick Jupyter notebook named Folder Maker](https://github.com/DataBiosphere/BYOD-to-Terra/blob/master/Folder%20Maker.py) that you can run in Terra to create a "psuedofolder" in your Data section. 
+For every Source-to-Bucket situation except for 6 and 8 (see below), you will be transferring files into your Terra workspace's data section. You may wish to keep this section organized. GCS's file system is a little bit complicated, so we have created [a quick Jupyter notebook named Folder Maker](https://github.com/DataBiosphere/BYOD-to-Terra/blob/master/Folder%20Maker.py) that you can run in Terra to create a "psuedofolder" in your Data section.
 
-If during the Bucket-to-Compute part of your BYOD project, you will be using one of the Jupyter notebooks provided to create a datatable, it is **strongly** recommended that you use Folder Maker, because the Bucket-to-Compute notebooks operate on all files within a given directory (or psuedofolder).
+If during the Bucket-to-Compute part of your BYOD project, you will be using one of the Jupyter notebooks provided to create a datatable, it is **strongly** recommended that you make use of psuedofolders, because the Bucket-to-Compute notebooks operate on all files within a given directory (or psuedofolder). If you do not wish to run Folder Maker and you are transferring files to your bucket via gsutil (see below), simply add the desired folder name to your `gsutil cp` command, such as `gsutil cp gs://source/file.cram gs://destination/desired_folder_name/file.cram`, to create the desired psuedofolder.
 
 ## Source-to-Bucket
 Depending on where your data is located, your Source-to-Bucket method will vary. Please see the following flow chart for details.
