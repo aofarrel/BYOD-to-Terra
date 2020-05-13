@@ -41,7 +41,7 @@ Please see [Google's instructions for installation](https://cloud.google.com/sto
 #### Copying files over
 First of all, you need to know the Google Cloud Storage "address" of your Terra workspace. You can find this by LINK TO TERRAS DOCS.
 
-Next, using `gsutil cp` to move the files over. Because your files are on your local directory, your source URL will just be the location of your files on your local machine, and your destination will be the gs:// URI of your Terra workspace's GCS bucket. Please see [Google's docs on gsutil cp](https://cloud.google.com/storage/docs/gsutil/commands/cp) for more information.
+Next, use `gsutil cp` to move the files to your workspace bucket. Because your files are on your local directory, your source URL will just be the location of your files on your local machine, and your destination will be the gs:// URI of your Terra workspace's GCS bucket. Please see [Google's docs on gsutil cp](https://cloud.google.com/storage/docs/gsutil/commands/cp) for more information.
 
 ### Situation 4: Local machine, using Terra's UI
 Please see ["Option 1" in this article here](https://support.terra.bio/hc/en-us/articles/360024056512-Uploading-to-a-workspace-Google-bucket). Note that if there is an error, Terra will not automatically attempt to reupload, so you may only want to go this route with small files. For large files, consider the solution for Situation 3.
