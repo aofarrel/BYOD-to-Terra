@@ -7,9 +7,6 @@ We've decided to break down the task into two main sections: First of all, you m
 **Note:** If you wish to import your data in a Jupyter notebook to process it and then pass that output into a workflow, it is easiest to think about it as two seperate BYOD problems. The first is for getting your data into your bucket in a way that can be processed by Jupyter. The second is moving your Jupyter output back into your Google Bucket as the Source-to-Bucket, and setting up your data to run as an input of your workflow is the Bucket-to-Compute part.
 
 ## Before you begin
-### Phenotypic data
-Data harmonization for phenotypic data is far beyond the scope of what we could possibly anticipate. Therefore, combining BYOD phenotypic data with Gen3 phenotypic data is not officially supported by the BYOD Notebook Suite. The functions within it, and the functions within Terra Data Utils, can be adapted for this purpose if you are confident that your phenotypic data will play nicely with Gen3 phenotypic data.
-
 ### File names
 Please keep in mind that any of these characters, if present in your filenames, may cause problems.
 
@@ -70,6 +67,8 @@ Now that your data is on the system, let's discuss how to actually use it. The r
 
 ### Situation A: WDL workflow using gs:// URI
 Using the Google Cloud Bucket address that your files now reside in, you can simply enter that address as an input into your workflow. [Terra's pipeling documentation](https://support.terra.bio/hc/en-us/articles/360026521831-Configure-a-workflow-to-process-your-data#h_d8435f57-4713-40c5-b5af-150f1872057f) explains how this is done. Remember, you can click on a file in Terra's data section to view it's full GCS address by just examining the `gsutil cp` command provided.
+
+![Image of a file in Terra's data section with its gs URI circled in green](https://raw.githubusercontent.com/DataBiosphere/BYOD-to-Terra/anvil/getting%20file%20address.png)
 
 ### Situation B: WDL workflow by creating data tables with the BYOD suite
 
