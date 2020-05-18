@@ -18,9 +18,11 @@ Please keep in mind that any of these characters, if present in your filenames, 
 Please note the "might work" column is **not** a recommendation. The recommendation is for file names to only have the characters A-Z, a-z, 0-9, _, ., and -.
 
 ### Keeping your bucket organized
-For every Source-to-Bucket situation except for 8 (see below), you will be transferring files into your Terra workspace's data section. You may wish to keep this section organized. GCS's file system is a little bit complicated, so we have created [a quick Jupyter notebook named Folder Maker](https://github.com/DataBiosphere/BYOD-to-Terra/blob/master/Folder%20Maker.py) that you can run in Terra to create a "psuedofolder" in your Data section. 
+For every Source-to-Bucket situation except for 8 (see below), you will be transferring files into your Terra workspace's data section. You may wish to keep this section organized using psuedofolders (strictly speaking gsutil does not have folders). If you are transferring files to your bucket via gsutil (see below), simply add the desired folder name to your `gsutil cp` command, such as `gsutil cp gs://source/file.cram gs://destination/desired_folder_name/file.cram`, to create the desired psuedofolder.
 
-If during the Bucket-to-Compute part of your BYOD project, you will be using one of the Jupyter notebooks provided to create a datatable, it is **strongly** recommended that you make use of psuedofolders, because the Bucket-to-Compute notebooks operate on all files within a given directory (or psuedofolder). If you do not wish to run Folder Maker and you are transferring files to your bucket via gsutil (see below), simply add the desired folder name to your `gsutil cp` command, such as `gsutil cp gs://source/file.cram gs://destination/desired_folder_name/file.cram`, to create the desired psuedofolder.
+If you are not using gsutil to transfer your files or want to learn more about psuedofolders, you can make use of [a small Jupyter notebook named Psuedofolder Maker](https://github.com/DataBiosphere/BYOD-to-Terra/blob/master/Psuedofolder%20Maker.py) that you can run in Terra to create a "psuedofolder" in your Data section. 
+
+If during the Bucket-to-Compute part of your BYOD project, you will be using one of the Jupyter notebooks provided to create a datatable, it is **strongly** recommended that you make use of psuedofolders, because the Bucket-to-Compute notebooks operate on all files within a given psuedofolder.
 
 ## Source-to-Bucket
 Depending on where your data is located, your Source-to-Bucket method will vary. Please see the following flow chart for details.
@@ -39,7 +41,9 @@ The easiest way to upload multiple files from your local machine to your Terra w
 Please see [Google's instructions for installation](https://cloud.google.com/storage/docs/gsutil_install). gsutil is a command line tool, but unlike many command line tools, there is also a Windows version available.
 
 #### Copying files over
-First of all, you need to know the Google Cloud Storage "address" of your Terra workspace. You can find this by LINK TO TERRAS DOCS.
+First of all, you need to know the Google Cloud Storage "address" of your Terra workspace. You can find this on the Dashboard page of your workspace, below the tags section. You can click the icon of a clipboard to copy the full bucket address.
+
+![Where to find the google bucket address of your workspace](https://github.com/aofarrel/tutorials/blob/master/google_bucket_resized.png?raw=true)
 
 Next, use `gsutil cp` to move the files to your workspace bucket. Because your files are on your local directory, your source URL will just be the location of your files on your local machine, and your destination will be the gs:// URI of your Terra workspace's GCS bucket. Please see [Google's docs on gsutil cp](https://cloud.google.com/storage/docs/gsutil/commands/cp) for more information.
 
