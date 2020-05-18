@@ -20,7 +20,7 @@ Please note the "might work" column is **not** a recommendation. The recommendat
 ### Keeping your bucket organized
 For every Source-to-Bucket situation except for 8 (see below), you will be transferring files into your Terra workspace's data section. You may wish to keep this section organized using psuedofolders (strictly speaking gsutil does not have folders). If you are transferring files to your bucket via gsutil (see below), simply add the desired folder name to your `gsutil cp` command, such as `gsutil cp gs://source/file.cram gs://destination/desired_folder_name/file.cram`, to create the desired psuedofolder.
 
-If you are not using gsutil to transfer your files or want to learn more about psuedofolders, you can make use of [a small Jupyter notebook named Psuedofolder Maker](https://github.com/DataBiosphere/BYOD-to-Terra/blob/master/Psuedofolder%20Maker.py) that you can run in Terra to create a "psuedofolder" in your Data section. 
+If you are not using gsutil to transfer your files or want to learn more about psuedofolders, you can make use of [a small Jupyter notebook named Psuedofolder Maker](https://github.com/DataBiosphere/BYOD-to-Terra/blob/anvil/Psuedofolder%20Maker.py) that you can run in Terra to create a "psuedofolder" in your Data section. 
 
 If during the Bucket-to-Compute part of your BYOD project, you will be using one of the Jupyter notebooks provided to create a datatable, it is **strongly** recommended that you make use of psuedofolders, because the Bucket-to-Compute notebooks operate on all files within a given psuedofolder.
 
