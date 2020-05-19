@@ -2,9 +2,9 @@
 ## Introduction
 The question of bringing your own data is a complicated one to write documentation for, as there are so many different places your data may be and so many different things you may wish to do with said data.
 
-We've decided to break down the task into two main sections: First of all, you must get your data into the system in the first place. We call this "Source-to-Bucket," refering to the movement of your files from your BYOD source into the Google Cloud Bucket of your Terra worksapce. Second, once your data is in the system, you will want to learn how to use it in either a Jupyter notebook, or a workflow. We call that part "Bucket-to-Compute."
+We've decided to break down the task into two main sections: First of all, you must get your data into the system in the first place. We call this "Source-to-Bucket," referring to the movement of your files from your BYOD source into the Google Cloud Bucket of your Terra worksapce. Second, once your data is in the system, you will want to learn how to use it in either a Jupyter notebook, or a workflow. We call that part "Bucket-to-Compute."
 
-**Note:** If you wish to import your data in a Jupyter notebook to process it and then pass that output into a workflow, it is easiest to think about it as two seperate BYOD problems. The first is for getting your data into your bucket in a way that can be processed by Jupyter. The second is moving your Jupyter output back into your Google Bucket as the Source-to-Bucket, and setting up your data to run as an input of your workflow is the Bucket-to-Compute part.
+**Note:** If you wish to import your data in a Jupyter notebook to process it and then pass that output into a workflow, it is easiest to think about it as two separate BYOD problems. The first is for getting your data into your bucket in a way that can be processed by Jupyter. The second is moving your Jupyter output back into your Google Bucket as the Source-to-Bucket, and setting up your data to run as an input of your workflow is the Bucket-to-Compute part.
 
 ## Before you begin
 ### File names
@@ -32,7 +32,7 @@ Depending on where your data is located, your Source-to-Bucket method will vary.
 If your data is on an institute server not owned by the Broad, you may be able to adapt one of the other methods presented here. Due to the range of different configurations, we can't predict what will work for every user, but we recommend first trying `gsutil cp` from your server (see Situation 3, treating the server as your local machine).
 
 ### Situation 2: Broad Institute server
-Information can be transferred directly from a Broad Institute Server to Terra [using the instructions documented in "Option 3" here](https://support.terra.bio/hc/en-us/articles/360024056512-Uploading-to-a-workspace-Google-bucket). This is similiar to Situation 6 but has a slightly different setup.
+Information can be transferred directly from a Broad Institute Server to Terra [using the instructions documented in "Option 3" here](https://support.terra.bio/hc/en-us/articles/360024056512-Uploading-to-a-workspace-Google-bucket). This is similar to Situation 6 but has a slightly different setup.
 
 ### Situation 3: Local machine, using gsutil
 The easiest way to upload multiple files from your local machine to your Terra workspace is to use gsutil on your local machine. gsutil is the tool used for interfacing between Google Cloud Storage buckets.
@@ -54,23 +54,23 @@ Please see ["Option 1" in this article here](https://support.terra.bio/hc/en-us/
 Please see documentation [here](https://hackmd.io/yXS65cyfTUSY8790vZzThw).
 
 ### Situation 6: Google Cloud Bucket, using gsutil
-Similiar to Situation 5, you can use Terra's terminal to move files around. This time, `gsutil cp` can be put to work moving files between a bucket you have downloader access to and your Terra workspace.
+Similar to Situation 5, you can use Terra's terminal to move files around. This time, `gsutil cp` can be put to work moving files between a bucket you have downloader access to and your Terra workspace.
 
 Note that if the GCS bucket you are transferring from is a requester pays bucket, you will need to provide your billing project ID in order to download the files. This billing project ID is the same one that you selected when making your workspace. If your billing project ID was terra-billing-test, then the resulting command would be:
 
 `gsutil -u terra-billing-test cp gs://source-bucket gs://terra-workspace`
 
 ### Situation 7: Using the gs:// URI directly
-In some cases, you might just be working with a few files. If so, you can skip the question of Source-to-Bucket entirely and just use the gs:// URI as your workflow input [as explained in Terra's pipeling documentation](https://support.terra.bio/hc/en-us/articles/360026521831-Configure-a-workflow-to-process-your-data#h_d8435f57-4713-40c5-b5af-150f1872057f). However, if you have enough files to make typing out the inputs tedious, it may be worth your time instead following the instructions for Situation 6.
+In some cases, you might just be working with a few files. If so, you can skip the question of Source-to-Bucket entirely and just use the gs:// URI as your workflow input [as explained in Terra's pipeline documentation](https://support.terra.bio/hc/en-us/articles/360026521831-Configure-a-workflow-to-process-your-data#h_d8435f57-4713-40c5-b5af-150f1872057f). However, if you have enough files to make typing out the inputs tedious, it may be worth your time instead following the instructions for Situation 6.
 
-### Situation 8: Transfering from AWS
+### Situation 8: Google's from AWS
 [Please see Google's documentation.](https://cloud.google.com/migrate/compute-engine/docs/4.8/how-to/migrate-aws-to-gcp/migrating-aws-vms)
 
 ## Bucket-to-Compute
 Now that your data is on the system, let's discuss how to actually use it. The route you take depends on whether you want to run a WDL workflow on your files, or to run something within a Jupyter notebook on your files.
 
 ### Situation A: WDL workflow using gs:// URI
-Using the Google Cloud Bucket address that your files now reside in, you can simply enter that address as an input into your workflow. [Terra's pipeling documentation](https://support.terra.bio/hc/en-us/articles/360026521831-Configure-a-workflow-to-process-your-data#h_d8435f57-4713-40c5-b5af-150f1872057f) explains how this is done. Remember, you can click on a file in Terra's data section to view it's full GCS address by just examining the `gsutil cp` command provided. You will likely have to scroll to read the full address.
+Using the Google Cloud Bucket address that your files now reside in, you can simply enter that address as an input into your workflow. [Terra's pipeline documentation](https://support.terra.bio/hc/en-us/articles/360026521831-Configure-a-workflow-to-process-your-data#h_d8435f57-4713-40c5-b5af-150f1872057f) explains how this is done. Remember, you can click on a file in Terra's data section to view it's full GCS address by just examining the `gsutil cp` command provided. You will likely have to scroll to read the full address.
 
 ![Image of a file in Terra's data section with its gs URI circled in green](https://raw.githubusercontent.com/DataBiosphere/BYOD-to-Terra/anvil/getting%20file%20address.png)
 
@@ -81,6 +81,6 @@ Jupyter notebooks exist in a virtual machine on Terra, so depending on how your 
 
 Before moving your files to your notebook VM, consider if it is necessary. It might be more time-effective to adapt your notebook to use gsutil or [terra-noteook-utils](https://github.com/DataBiosphere/terra-notebook-utils) to query only the file names or some of their contents rather than downloading the entire file. For instance, [File Finder](https://github.com/DataBiosphere/BYOD-to-Terra/blob/master/File%20Finder.py) does not transfer the files it works upon from your workspace bucket, instead just querying Google for their file names.
 
-Generally speaking, you will only need to take a seperate step to move your files into your VM if you are using a Jupyter notebook that needs to parse an entire file.
+Generally speaking, you will only need to take a separate step to move your files into your VM if you are using a Jupyter notebook that needs to parse an entire file.
 
 If you are working with files behind DRS URIs, it is recommend to use [terra-noteook-utils](https://github.com/DataBiosphere/terra-notebook-utils)' functions of `drs.download()` and `drs.copy()` to transfer to the notebook VM/your workspace bucket respectively instead of the instructions below.

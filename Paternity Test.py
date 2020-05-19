@@ -4,17 +4,17 @@
 # # BYOD -- Paternity Test
 #  
 # ## Goal
-# Generate a Terra data table from files that a user has uploaded into a workspace bucket, where each row represents a "parent" file and has cells for its "children." Parent files are things like CRAM, and child files are things like CRAI. It is named Paternity Test in the sense that parents and children are linked in the same table. What is determined to be a parent is set by the user specifying a file extension. Only one parent is allowed per data table.
+# Generates a Terra data table from files that a user has uploaded into a workspace bucket, where each row represents a "parent" file and has cells for its "children." 
 # 
-# This sort of thing can be done on a local UNIX/UNIX-like machine using shell scripts, but that isn't ideal for certain BYOD scenarios. We need a way to do it programmatically (as there might be hundreds of files) and on the Terra platform itself (as the files might be coming from Windows, or the user doesn't know how to run a shell script), hence the motivation for this notebook's creation.
+# It is named Paternity Test in the sense that parents and children are linked in the same table, where the parent is the file that links all the other related files together. What is determined to be a parent is set by the user specifying a file extension. For example, a CRAM file could be a parent, and its associated CRAI file could be considered its child. Another alternative is the parent could be a text file with information about the subject and the children could be multiple CRAM files from that subject.
 # 
 # ## Assumptions
-# 1) You have a psuedo-folder in your Terra data section that contains BYOD data in the form of files  
-# 2) All of the files you want in your data table are in the same psuedo-folder, and are not in sub-psuedo-folders  
+# 1) You have a psuedofolder in your Terra data section that contains BYOD data in the form of files -- see [here](https://github.com/DataBiosphere/BYOD-to-Terra/blob/anvil/full_documentation.md) for info on that  
+# 2) All of the files you want in your data table are in the same psuedofolder, and are not in sub-psuedofolders  
 # 3) You've uploaded all your files already -- Terra data tables are not dynamic, so if you want to add more later, you'll have to re-run this notebook  
 # 4) You are not trying to overwrite a data table you have already created. If you re-run this notebook and set TABLE_NAME to something that already exists as a Terra data table, the old table will NOT to overwritten. You will need to either pick a new name or delete the old table first.  
 # 
-# You do NOT have to have run File Finder before this notebook. The difference between this and File Finder is that File Finder will create a row for every file in your psuedo-folder, while Paternity Test will create a row for every parent file.
+# You do NOT have to have run File Finder before this notebook. **The difference between this notebook and File Finder is that File Finder will create a row for every file in your psuedofolder, while Paternity Test will create a row for every parent file.**
 # 
 # Files that lack the parent file extension and are not children will NOT be added to the data table.
 
@@ -52,7 +52,7 @@ import logging
 
 # Don't forgot the quotation marks!
 SUBDIRECTORY="/thousands/"
-TABLE_NAME="paternity_test_test" #Do not include spaces or weird characters
+TABLE_NAME="cram-paternity-test" #Do not include spaces or underscores
 PARENT_FILETYPE="cram"
 
 # If your filenames are like this, please set INCLUDE_PARENT_EXTENSION to True:
@@ -171,6 +171,7 @@ with open(TABLE_NAME, 'w') as f:
                 # only add a line if there is a corresponding child file
                 if basename_blob.name.endswith(CHILD_FILETYPE):
                     table_id = f'{i}'
+                    table_id = table_id.zfill(4)
                     parent_filename = blob.name.split('/')[-1]
                     child_filename = basename_blob.name.split('/')[-1]
                     parent_location = f'{google_storage_prefix}{bucket}/{blob.name}'

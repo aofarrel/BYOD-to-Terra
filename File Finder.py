@@ -92,8 +92,8 @@ get_ipython().system('gsutil ls $directory')
 
 # If you get a CommandError exception here, it may be because your SUBPREFIX is for a psuedo-folder that doesn't actually exist. Try `!gsutil ls $bucket` and make sure the directory you're looking for actally exists. If it's not there, run the Folder-Maker notebook first.
 
-# ## Delete placeholder file (if you created folder with Folder Maker)
-# Since there's now other files in the psuedo-folder (see Folder Maker for more info on why we are calling this a psuedo-folder), you can delete the placeholder file that Folder Maker made in order to prevent it from showing up in your TSV. If you get a "no URLS matched" error, the placeholder file has likely already been deleted.
+# ## Delete placeholder file (if you used Psuedofolder Maker)
+# Since there's now other files in the psuedo-folder (see Psuedofolder Maker for more info on why we are calling this a psuedo-folder), you can delete the placeholder file that Psuedofolder Maker made in order to prevent it from showing up in your TSV. If you get a "no URLS matched" error, the placeholder file has likely already been deleted.
 
 # In[ ]:
 
