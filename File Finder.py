@@ -4,13 +4,15 @@
 # # BYOD -- File Finder
 #  
 # ## Goal
-# Generate a Terra data table from files that a user has uploaded into a workspace bucket. It is named File Finder in the sense that your BYOD files will be transferred to a Terra data table that includes their Google Cloud Storage addresses, allowing them to easily be found by workflows.
+# Generate a Terra data table from files that a user has uploaded into a workspace bucket.
 # 
-# This sort of thing can be done on a local UNIX/UNIX-like machine using shell scripts, but that isn't ideal for certain BYOD scenarios. We need a way to do it programmatically (as there might be hundreds of files) and on the Terra platform itself (as the files might be coming from Windows, or the user doesn't know how to run a shell script), hence the motivation for this notebook's creation.
+# This notebook is named File Finder in the sense that the location of your BYOD files will be transferred to a Terra data table that includes their Google Cloud Storage addresses, allowing them to easily be found by workflows. To be clear, the contents of the files themselves are not parsed by this notebook, just their file name and their address.
+# 
+# This notebook is a more user-friendly Jupyter version of [tsvify.sh](https://github.com/DataBiosphere/BYOD-to-Terra/blob/anvil/tsvify.sh) that runs in the cloud instead of on a local machine.
 # 
 # ## Assumptions
-# 1) You have a psuedo-folder in your Terra data section that contains BYOD data in the form of files  
-# 2) All of the files you want in your data table are in the same psuedo-folder, and are not in sub-psuedo-folders  
+# 1) You have a psuedofolder in your Terra data section that contains BYOD data in the form of files -- see [documentation here](https://github.com/DataBiosphere/BYOD-to-Terra/blob/anvil/full_documentation.md) if you need help uploading your files 
+# 2) All of the files you want in your data table are in the same psuedofolder, and are not in sub-psuedofolders  
 # 3) You've uploaded all your files already -- Terra data tables are not dynamic, so if you want to add more later, you'll have to re-run this notebook  
 # 4) You are not trying to overwrite a data table you have already created. If you re-run this notebook and set TABLE_NAME to something that already exists as a Terra data table, the old table will NOT to overwritten. You will need to either pick a new name or delete the old table first.
 
