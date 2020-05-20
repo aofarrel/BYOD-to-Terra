@@ -17,15 +17,33 @@
 # You do NOT have to have run File Finder before this notebook. **The difference between this notebook and File Finder is that File Finder will create a row for every file in your psuedofolder, while Paternity Test will create a row for every parent file.**
 # 
 # Files that lack the parent file extension and are not children will NOT be added to the data table.
+# 
+# ## Results
+# If you have one child per parent file, your output will look something like this.  
+# 
+# | parent | URI        | child1 | child1 URI |  
+# |--------|------------|--------|------------|  
+# | cram1  | gs://cram1 | crai1  | gs://crai1 |  
+# | cram2  | gs://cram2 | crai2  | gs://crai2 |  
+# | cram3  | gs://cram3 | crai3  | gs://crai3 |  
+# 
+# As more children are added, the number of rows will increase.  
+# 
+# | parent | URI        | child1 | child1 URI | child2 | child2 URI |  
+# |--------|------------|--------|------------|--------|------------|  
+# | cram1  | gs://cram1 | crai1  | gs://crai1 | txt1   | gs://txt1  |  
+# | cram2  | gs://cram2 | crai2  | gs://crai2 | txt2   | gs://txt2  |  
+# | cram3  | gs://cram3 | crai3  | gs://crai3 | txt3   | gs://txt3  |  
 
-# Version history:
+# ## Version history:
 # 
 # | v | date | author | notes |
 # | --- | --- | --- | --- |
 # | 0.9 | April 6th 2020 | Ash | initial |
-# | 1.0 | April 13th 2020 | Ash, Lon |   fixed multiple children and no parent usecases, implented Lon's no-pandas code, implemented Brian and Lon's other suggestions, better intro|
-# | 1.1 | April 14th 2020 | Ash |   made Pandas code significantly faster|
+# | 1.0 | April 13th 2020 | Ash, Lon |   fixed multiple children and no parent usecases, implemented Lon's no-pandas code + Brian and Lon's other suggestions, better intro|
+# | 1.1 | April 14th 2020 | Ash |   made Pandas code significantly faster (n=3000 files split over 1 parent and 2 children: 340 s --> 165 s)|
 # | 1.2 | April 27th 2020 | Ash |   fixed NameError exception notice, rearranged for clarity and consistency across notebooks|
+# | 1.3 | May 19th 2020 | Ash |   better logging, indeces now zfilled, parents now sort at front in panadas code, minor clarifications|
 # 
 
 # # Setup
@@ -52,7 +70,7 @@ import logging
 
 # Don't forgot the quotation marks!
 SUBDIRECTORY="/thousands/"
-TABLE_NAME="cram-paternity-test" #Do not include spaces or underscores
+TABLE_NAME="table_name" #Do not include spaces or underscores
 PARENT_FILETYPE="cram"
 
 # If your filenames are like this, please set INCLUDE_PARENT_EXTENSION to True:
@@ -109,8 +127,8 @@ get_ipython().system('gsutil ls $directory')
 
 # If you get a CommandError exception here, it may be because your SUBPREFIX is for a psuedo-folder that doesn't actually exist. Try `!gsutil ls $bucket` and make sure the directory you're looking for actally exists. If it's not there, run the Folder-Maker notebook first.
 
-# ## Delete placeholder file (if you created folder with Folder Maker)
-# Since there's now other files in the psuedo-folder (see Folder Maker for more info on why we are calling this a psuedo-folder), you can delete the placeholder file that Folder Maker made in order to prevent it from showing up in your TSV.
+# ## Delete placeholder file (if you used Psuedofolder Maker)
+# Since there's now other files in the psuedofolder, you can delete the placeholder file that Folder Maker made in order to prevent it from showing up in your TSV.
 
 # In[ ]:
 
@@ -133,7 +151,7 @@ get_ipython().system('gsutil rm gs${directory}placeholder')
 # | parent files | child 1 files | child 2 files | estimated time for Option 1 | estimated time for Option 2 |  
 # | --- | --- | --- | --- | --- |  
 # | 1000 | 1000 | 0 | 35 seconds | 130 seconds |  
-# | 1000 | 1000 | 1000 | cannot handle | 340 seconds |  
+# | 1000 | 1000 | 1000 | cannot handle | 165 seconds |  
 
 # ## Option 1: Single Child
 # This will ONLY assign a single child to each parent. Additional children will be ignored. You must write the CHILD_FILETYPE in the cell below.
@@ -199,6 +217,7 @@ with open(TABLE_NAME, 'r') as f:
 
 response = fapi.upload_entities_tsv(BILLING_PROJECT_ID, WORKSPACE, TABLE_NAME, "flexible")
 fapi._check_response_code(response, 200)
+get_ipython().system('rm $TABLE_NAME')
 
 
 # ## Option 2: Multiple children
@@ -233,6 +252,7 @@ lineslocation = this_file.read().splitlines()
 this_file.close()
 that_file=open("filenames.txt", "r")
 linesfilename = that_file.read().splitlines()
+that_file.close()
 data['filename'] = linesfilename
 data['location'] = lineslocation #here in order to put columns in a particular order without reassigning later
 
@@ -268,25 +288,28 @@ for child_extension in unique_children: #loop once per child extension
             #output_list.update({baseID(row_series['filename'], child_extension) : df.at[index_label,'FileType']})
         else:
             pass
-# For thousands of files this takes a long time, let's try to show some sort of progress.
-# Progress bar packages that use carriage returns don't play nicely with Jupyter when cells
-# are ran more than once, so a balance between the user being updated and not making several
-# lines of text is needed.
-if(df.shape[0] > 100):
-    triggerevery = df.shape[0] // 5
-    nexttrigger = triggerevery
-else:
-    triggerevery = None
 
 logging.info("Child file types are: %s  If this looks wrong, check your GCS directory for missing or junk files." % unique_children)
     
 # Iterate yet again to match children with their parents
 logging.info("Matching children and parents...")
-i = 0 #only used for logging
-j = 0
+current_child = 0 #only used for logging
+
 for child_extension in unique_children: #loop once per child extension
-    i=i+1
-    logging.info("\t* Looking at %s files (child %d out of %d)" % (child_extension, i, len(unique_children)))
+    
+    current_child=current_child+1
+    logging.info("\t* Looking at %s files (child %d out of %d)" % (child_extension, current_child, len(unique_children)))
+    
+    # For thousands of files this takes a long time, let's try to show some sort of progress.
+    # Progress bar packages that use carriage returns don't play nicely with Jupyter when cells
+    # are ran more than once, so a balance between the user being updated and not making several
+    # lines of text is needed.
+    j = 0
+    if(df.shape[0] > 100):
+        triggerevery = df.shape[0] // 5
+        nexttrigger = triggerevery
+    else:
+        triggerevery = None
     
     # Iterate df, where each row represents one file of any type
     for index_label, row_series in df.iterrows():
@@ -295,7 +318,7 @@ for child_extension in unique_children: #loop once per child extension
         if triggerevery is not None:
             j=j+1
             if(j==nexttrigger):
-                logger.info("\t\t* %d / %d" % (nexttrigger, df.shape[0]))
+                logger.info("\t\t* %d rows processed, %d parent or unmatched child rows remaining in dataframe" % (nexttrigger, df.shape[0]))
                 nexttrigger = nexttrigger + triggerevery
                 if nexttrigger >= df.shape[0]:
                     nexttrigger = triggerevery
@@ -332,10 +355,11 @@ logging.info("Cleaning up dataframe...")
 # Iterate one more time to delete child rows
 # Because children could appear above their parents, deleting during the above iteration could mess things up
 df.drop(columns=['ID'], inplace=True)
-df.rename(columns = {'FileType':'parent_file_ext'}, inplace = True)
 for index_label, row_series in df.iterrows():
-        if(df.at[index_label,'parent_file_ext'] != PARENT_FILETYPE):
+        if(df.at[index_label,'FileType'] != PARENT_FILETYPE):
             df.drop([index_label], inplace=True)
+df.drop(columns=['FileType'], inplace=True)
+df.rename(columns = {'filename':'-parent_file', 'location':'-parent_location'}, inplace = True)
 df.reset_index(inplace=True, drop=True)
 logging.info("Finished")
 
@@ -355,9 +379,6 @@ print(df)
 # In[ ]:
 
 
-#!rm final.tsv
-# ^ Uncomment above line if you will be running this block more than once
-
 df.to_csv("dataframe.tsv", sep='\t')
 
 # Format resulting TSV file to play nicely with Terra 
@@ -369,11 +390,15 @@ full_header="entity:"+TABLE_NAME+"_id"+header
 with open('final.tsv', "a") as file2:
     file2.write(full_header)
     for string in everything_else:
-        file2.write(string)
+        # Zfill the index
+        columns = string.split('\t')
+        columns[0] = columns[0].zfill(5)
+        file2.write('\t'.join(columns))
     file2.close()
-
+    
 # Clean up
-get_ipython().system('rm dataframe.tsv')
 response = fapi.upload_entities_tsv(BILLING_PROJECT_ID, WORKSPACE, "final.tsv", "flexible")
 fapi._check_response_code(response, 200)
+get_ipython().system('rm dataframe.tsv')
+get_ipython().system('rm final.tsv')
 
