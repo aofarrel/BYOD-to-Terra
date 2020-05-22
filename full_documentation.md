@@ -80,6 +80,8 @@ Using the notebooks provided in this repo, you can create data tables that point
 
 Although the second column looks like it just contains the file name on Terra's UI, cells in that column actually have the full gs URI of the file. If you click on the hyperlink in Terra's view of this data table, a popup showing where the gs URI of the file will appear.
 
+When running a workflow on Terra, you have the option of using the contents of data table's column as an input in your workflow. This is the use case for which the BYDO suite was designed. If you need information on how to use data tables as workflow inputs, [please see Terra's documentation here](https://support.terra.bio/hc/en-us/articles/360026521831-Configure-a-workflow-to-process-your-data#h_602a754c-7e8d-4cc2-8a0b-6deef92b2f85).
+
 ### Situation C: Jupyter
 Jupyter notebooks exist in a virtual machine on Terra, so depending on how your notebook is set up, you might need to transfer your files into the notebook VM. Please note that these instructions are focused on moving actual files into a notebook VM; if you wish to parse data tables instead, check out [terra-notebook-utils](https://github.com/DataBiosphere/terra-notebook-utils), which can parse dataframes by converting them to pandas dataframes.
 
