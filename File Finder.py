@@ -90,10 +90,10 @@ storage_client = google.cloud.storage.Client()
 get_ipython().system('gsutil ls $directory')
 
 
-# If you get a CommandError exception here, it may be because your SUBPREFIX is for a psuedo-folder that doesn't actually exist. Try `!gsutil ls $bucket` and make sure the directory you're looking for actally exists. If it's not there, run the Folder-Maker notebook first.
+# If you get a CommandError exception here, it may be because your SUBPREFIX is for a psuedofolder that doesn't actually exist. Try `!gsutil ls $bucket` and make sure the directory you're looking for actally exists. If it's not there, run the Psuedofolder Maker notebook first.
 
 # ## Delete placeholder file (if you used Psuedofolder Maker)
-# Since there's now other files in the psuedo-folder (see Psuedofolder Maker for more info on why we are calling this a psuedo-folder), you can delete the placeholder file that Psuedofolder Maker made in order to prevent it from showing up in your TSV. If you get a "no URLS matched" error, the placeholder file has likely already been deleted.
+# Since there's now other files in the psuedofolder (see Psuedofolder Maker for more info on why we are calling this a psuedofolder), you can delete the placeholder file that Psuedofolder Maker made in order to prevent it from showing up in your TSV, if you have not done so already. If you get a "no URLS matched" error, the placeholder file has likely already been deleted.
 
 # In[ ]:
 
