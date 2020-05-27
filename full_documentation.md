@@ -1,6 +1,8 @@
 # Bringing Your Own Data (BYOD) to Terra
 ## Introduction
-The question of bringing your own data is a complicated one to write documentation for, as there are so many different places your data may be and so many different things you may wish to do with said data.
+"Interoperability" is a term that gets heard a lot these days, but what does it truly mean? In the context of bioengineering, it refers to the ability of different systems to work together. A simple example of this is how workflows written in WDL can be directly imported to Terra from their respective pages on Dockstore. But what if the data you want to run your workflows upon isn't in your Terra workspace yet? Or perhaps you've already imported, but perhaps you are in search of a good way to index it so you can use hundreds of files as a workflow input without typing them manually. If so, you've come to the right place.
+
+The question of bringing your own data (BYOD, as we call it) is a complicated one to write documentation for, as there are so many different places your data may be and so many different things you may wish to do with said data.
 
 We've decided to break down the task into two main sections: First of all, you must get your data into the system in the first place. We call this "Source-to-Bucket," referring to the movement of your files from your BYOD source into the Google Cloud Bucket of your Terra worksapce. Second, once your data is in the system, you will want to learn how to use it in either a Jupyter notebook, or a workflow. We call that part "Bucket-to-Compute."
 
