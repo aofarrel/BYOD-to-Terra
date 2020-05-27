@@ -7,14 +7,11 @@
   	(ie, if you had 500 CRAMs and 500 CRAIs, your table would have 1000 rows)
   * Paternity Test: Like File Finder, except parent files are linked to child files. Every row represents a parent file.
   	(ie, if you had 500 CRAMs and 500 CRAIs, your table would have 500 rows)
-  * Table Smasher: Combines a BYOD data table from File Finder with data tables imported from Gen3.
 
 For more information please see the Use Cases section below.
 
 # Installation
 Download the iPython notebooks and then reupload them into your Terra workspace. Unfortunately Terra does not allow automatic update of notebooks due to how Workspaces work, so you will need to redownload/reupload manually if you wish to update later.
-
-Note that Table Smasher currently REQUIRES an up-to-date copy of terra-data-utils in the same workspace, not included here as they are still in active development.
 
 # Use Cases
 
@@ -27,8 +24,6 @@ Use **File Finder** to make a TSV file out of your data. This TSV file will link
 
 If you'd rather your local system do all the heavy lifting, check **tsvify.sh** instead. tsvify.sh does not support Windows.
 
-If you would like to combine your own data with Gen3 data of the same type, use **Table Smasher** to combine a Gen3 table with your own.
-
 ### Importing more than one file type (ex: CRAMs and their associated CRAI files)
 
 #### Background
@@ -36,5 +31,3 @@ Gen3 uses a data structure involving multiple data tables, where some files are 
 
 #### How Paternity Test Works
 **Paternity Test** uses a similiar concept as Gen's parent-child data structure, but instead of linking multiple tables, it just uses one. Let's say you wanted to link CRAM and their associated CRAI files. Every row in your final paternity test table would represent a CRAM file and its child CRAI file. Only one table is created. **Also, although Paternity Test works best with one-child-per-parent situation, you can be applied to any arbitrary number of children. This allows you to use Paternity Test to create, for example, a mega table where each row represents a subject (perhaps denoted by a simple text file, or a file containining phenotypic information), plus the subject's associated CRAM file, CRAI file, and VCF file.**
-
-Combining Paternity Test tables with Gen3 is currently not supported.
