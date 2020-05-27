@@ -15,11 +15,11 @@
 # | 1.1 | May 18th 2020 | Ash | clarified use case, changed name from Folder Maker to more accurate Psuedofolder Maker
 
 # ## Use case
-# If you will be using gsutil to move your files into your workspace bucket, *you do not need this notebook.* Instead, simply add the desired folder name to your gsutil cp command, such as `gsutil cp gs://source/file.cram gs://destination/desired_folder_name/file.cram`, to create the desired psuedofolder.
+# If you will be using gsutil to move your files into your workspace bucket, *you do not need this notebook.* Instead, simply add the desired folder name to your gsutil cp command, such as `gsutil cp gs://source/file.cram gs://destination/desired_folder_name/file.cram`, to create the desired psuedofolder. Biodata Catalyst users who are importing data from Gen3 also have no use for this notebook.
 # 
-# This notebook's rare use case is for those who will be transferring files without using gsutil, such as using Terra's UI, which otherwise does not provide a way for users to create psuedofolders. Biodata Catalyst users who are importing data from Gen3 also have no use for this notebook.
+# This notebook's rare use case is for those who will be transferring files without using gsutil, such as using Terra's UI, which otherwise does not provide a way for users to create psuedofolders.
 # 
-# This is the only notebook in the BYOD notebook suite that is meant to be run *before* actually moving your files into your bucket.
+# This is the only notebook in the BYOD notebook suite that is meant to be run *before* actually moving your files into your bucket. All other provided notebooks are meant to be run *after* the files are in place.
 
 # ## A little more info on "psuedofolders"
 # This explanation is only given to explain why there's no `mkdir` for GCS and why a notebook is required for what would otherwise be a simple task. It is optional reading.
