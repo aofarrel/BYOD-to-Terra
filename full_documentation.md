@@ -75,7 +75,7 @@ In some cases, you might just be working with a few files. If so, you can skip t
 ## Grant-Specific Situations
 
 ### Importing from Gen3 (an NIH cloud-platform partner)
-[Gen3](https://gen3.org/) is an NIH cloud-platform that currently interoperates with Terra as the data provider for [NHLBI BioData Catalyst](gen3.biodatacatalyst.nhlbi.gov) and will eventually support NHGRI AnVIL in a similar role. Gen3 emp
+[Gen3](https://gen3.org/) is an NIH cloud-platform that currently interoperates with Terra as the data provider for [NHLBI BioData Catalyst](gen3.biodatacatalyst.nhlbi.gov) and will eventually support NHGRI AnVIL in a similar role.
 
 Users of BioData Catalyst can learn how to access and hand-off data from Gen3 using [this documentation repository](https://bdcatalyst.gitbook.io/biodata-catalyst-documentation/explore_data/gen3-discovering-data). The data currently hosted by BioData Catalyst can be found [here](https://biodatacatalyst.nhlbi.nih.gov/resources/data). 
 
