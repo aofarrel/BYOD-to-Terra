@@ -1,10 +1,16 @@
-# Bringing Your Own Data (BYOD) to Terra
-## Introduction
-"Interoperability" is a term that gets heard a lot these days, but what does it truly mean? In the context of bioengineering, it refers to the ability of different systems to work together. A simple example of this is how workflows written in WDL can be directly imported to Terra from their respective pages on Dockstore. But what if the data you want to run your workflows upon isn't in your Terra workspace yet? Or perhaps you've already imported, but perhaps you are in search of a good way to index it so you can use hundreds of files as a workflow input without typing them manually. If so, you've come to the right place.
+# NIH Interoperability & Bringing Your Own Data (BYOD) to Terra
+
+## About NIH Interoperability 
+
+The National Institute of Health supports interoperability among cloud-based platforms to improve how biomedical data is stored, accesses, shared, and computed on. Several initiatives have since spurred from the original [NIH Data Commons Pilot](https://www.nih.gov/news-events/news-releases/nih-awards-test-ways-store-access-share-compute-biomedical-data-cloud), including [NHGRI AnVIL](www.anvilproject.org) and [NHLBI BioData Catalyst](biodatacatalyst.nhlbi.nih.gov). These cloud intitiatives are working towards interoperability to provide paths for researchers to access data resources from across NIH and conduct analyses in secure workspaces. 
+
+You are likeky found this workspace because you are interested conducting research in one or more of these NIH cloud-platform ecosystems.  In this tutorial, we are providing examples for how to bring your own data to a Terra workspace and utilize resources from NIH cloud-based platforms that interoperate with Terra; be it comparing your own data to data provided by an NIH initiative, or computing on your data in a secure platform with access to a rich tools repository. 
+
+## Introduction to BYOD
 
 The question of bringing your own data (BYOD, as we call it) can be complex, so we are breaking it down into parts: First of all, you must get your data into the system in the first place. We call this "Source-to-Bucket," referring to the movement of your files from your BYOD source into the Google Cloud Bucket of your Terra worksapce. Second, once your data is in the system, you will want to learn how to use it in either a Jupyter notebook, or a workflow. We call that part "Bucket-to-Compute."
 
-**Note:** If you wish to import your data in a Jupyter notebook to process it and then pass that output into a workflow, it is easiest to think about it as two separate BYOD problems. The first is for getting your data into your bucket in a way that can be processed by Jupyter. The second is moving your Jupyter output back into your Google Bucket as the Source-to-Bucket, and setting up your data to run as an input of your workflow is the Bucket-to-Compute part.
+**Note:** If you wish to import your data in a Jupyter notebook to process it and then pass that output into a workflow, it is easiest to think about it as two separate BYOD problems. The first is for getting your data into your bucket in a way that can be processed by Jupyter notebooks. The second is moving your Jupyter botebook output back into your Google Bucket as the Source-to-Bucket, and setting up your data to run as an input of your workflow is the Bucket-to-Compute part.
 
 ## Before you begin
 ### File names
@@ -65,6 +71,18 @@ In some cases, you might just be working with a few files. If so, you can skip t
 
 ### Situation 8: Google's from AWS
 [Please see Google's documentation.](https://cloud.google.com/migrate/compute-engine/docs/4.8/how-to/migrate-aws-to-gcp/migrating-aws-vms)
+
+### Situation 9: Importing from Gen3 (an NIH cloud-platform partner)
+[Gen3](https://gen3.org/) is an NIH cloud-platform that currently interoperates with Terra as the data provider for [NHLBI BioData Catalyst](gen3.biodatacatalyst.nhlbi.gov) and will eventually support NHGRI AnVIL in a similar role. Gen3 emp
+
+Users of BioData Catalyst can learn how to access and hand-off data from Gen3 using [this documentation repository](https://bdcatalyst.gitbook.io/biodata-catalyst-documentation/explore_data/gen3-discovering-data). The data currently hosted by BioData Catalyst can be found [here](https://biodatacatalyst.nhlbi.nih.gov/resources/data). 
+
+Instructions for how AnVIL users can employ Gen3 will be coming later in 2020. 
+
+### Situation 10: Interacting with data hosted within Terra
+Terra is the current data repository for the NHGRI AnVIL. You can learn more about the [data currently available in AnVIL](https://anvilproject.org/data) and [how researchers can request access](https://anvilproject.org/data/requesting-data-access).
+
+Terra also hosts many other data resources. You can learn more about data hosted in Terra [here](https://app.terra.bio/#library/datasets). 
 
 ## Bucket-to-Compute
 Now that your data is on the system, let's discuss how to actually use it. The route you take depends on whether you want to run a WDL workflow on your files, or to run something within a Jupyter notebook on your files.
