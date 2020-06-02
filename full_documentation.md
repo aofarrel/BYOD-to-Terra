@@ -2,9 +2,9 @@
 
 ## About NIH Interoperability 
 
-The National Institute of Health supports interoperability among cloud-based platforms to improve how biomedical data is stored, accesses, shared, and computed on. Several initiatives have since spurred from the original [NIH Data Commons Pilot](https://www.nih.gov/news-events/news-releases/nih-awards-test-ways-store-access-share-compute-biomedical-data-cloud), including [NHGRI AnVIL](www.anvilproject.org) and [NHLBI BioData Catalyst](biodatacatalyst.nhlbi.nih.gov). These cloud intitiatives are working towards interoperability to provide paths for researchers to access data resources from across NIH and conduct analyses in secure workspaces. 
+The National Institute of Health supports interoperability among cloud-based platforms to improve how biomedical data is stored, accessed, shared, and computed on. Several initiatives have since spurred from the original [NIH Data Commons Pilot](https://www.nih.gov/news-events/news-releases/nih-awards-test-ways-store-access-share-compute-biomedical-data-cloud), including [NHGRI AnVIL](www.anvilproject.org) and [NHLBI BioData Catalyst](biodatacatalyst.nhlbi.nih.gov). These cloud intitiatives are working towards interoperability to provide paths for researchers to access data resources from across NIH and conduct analyses in secure workspaces. 
 
-You are likeky found this workspace because you are interested conducting research in one or more of these NIH cloud-platform ecosystems.  In this tutorial, we are providing examples for how to bring your own data to a Terra workspace and utilize resources from NIH cloud-based platforms that interoperate with Terra; be it comparing your own data to data provided by an NIH initiative, or computing on your data in a secure platform with access to a rich tools repository. 
+You likely found this workspace because you are interested conducting research in one or more of these NIH cloud-platform ecosystems. In this tutorial, we are providing examples for how to bring your own data to a Terra workspace and utilize resources from NIH cloud-based platforms that interoperate with Terra -- be it comparing your own data to data provided by an NIH initiative, or computing on your data in a secure platform with access to a rich tools repository.
 
 ## Introduction to BYOD
 
@@ -72,14 +72,16 @@ In some cases, you might just be working with a few files. If so, you can skip t
 ### Situation 8: Google's from AWS
 [Please see Google's documentation.](https://cloud.google.com/migrate/compute-engine/docs/4.8/how-to/migrate-aws-to-gcp/migrating-aws-vms)
 
-### Situation 9: Importing from Gen3 (an NIH cloud-platform partner)
+## Grant-Specific Situations
+
+### Importing from Gen3 (an NIH cloud-platform partner)
 [Gen3](https://gen3.org/) is an NIH cloud-platform that currently interoperates with Terra as the data provider for [NHLBI BioData Catalyst](gen3.biodatacatalyst.nhlbi.gov) and will eventually support NHGRI AnVIL in a similar role. Gen3 emp
 
 Users of BioData Catalyst can learn how to access and hand-off data from Gen3 using [this documentation repository](https://bdcatalyst.gitbook.io/biodata-catalyst-documentation/explore_data/gen3-discovering-data). The data currently hosted by BioData Catalyst can be found [here](https://biodatacatalyst.nhlbi.nih.gov/resources/data). 
 
 Instructions for how AnVIL users can employ Gen3 will be coming later in 2020. 
 
-### Situation 10: Interacting with data hosted within Terra
+### Interacting with data hosted within Terra
 Terra is the current data repository for the NHGRI AnVIL. You can learn more about the [data currently available in AnVIL](https://anvilproject.org/data) and [how researchers can request access](https://anvilproject.org/data/requesting-data-access).
 
 Terra also hosts many other data resources. You can learn more about data hosted in Terra [here](https://app.terra.bio/#library/datasets). 
