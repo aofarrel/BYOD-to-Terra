@@ -1,6 +1,8 @@
 # [BDC] BYOD to Terra
  Repo for Bring Your Own Data (BYOD) resources for Terra. Created as part of BioData Catalyst. Currently a work-in-progress, these resources are made to be used on Terra via its Jupyter Notebook integration. The goal of these tools is two-fold: Clearly show how to move your own data into Terra, and index it in a way that running workflows on said data is simple by leveraging Terra's data table features.
 
+ This repository is a copy of the resources that will be made available in an upcoming Terra workspace. That workspace's Dashboard text is stored here as "full_documentation.md"
+
  The notebooks are as follows:
   * Folder Maker: Create a "folder" on Terra for you to neatly upload your data into.
   * File Finder: Generate a Terra data table of BYOD files, the simplest use case. Every row represents one file.

@@ -2,15 +2,15 @@
 
 ## About NIH Interoperability 
 
-The National Institute of Health supports interoperability among cloud-based platforms to improve how biomedical data is stored, accessed, shared, and computed on. Several initiatives have since spurred from the original [NIH Data Commons Pilot](https://www.nih.gov/news-events/news-releases/nih-awards-test-ways-store-access-share-compute-biomedical-data-cloud), including [NHGRI AnVIL](https://www.anvilproject.org) and [NHLBI BioData Catalyst](https://biodatacatalyst.nhlbi.nih.gov). These cloud intitiatives are working towards interoperability to provide paths for researchers to access data resources from across NIH and conduct analyses in secure workspaces. 
+The National Institute of Health supports interoperability among cloud-based platforms to improve how biomedical data is stored, accessed, shared, and computed on. Several initiatives have since spurred from the original [NIH Data Commons Pilot](https://www.nih.gov/news-events/news-releases/nih-awards-test-ways-store-access-share-compute-biomedical-data-cloud), including [NHGRI AnVIL](https://www.anvilproject.org) and [NHLBI BioData Catalyst](https://biodatacatalyst.nhlbi.nih.gov). These cloud initiatives are working towards interoperability to provide paths for researchers to access data resources from across NIH and conduct analyses in secure workspaces. 
 
 You likely found this workspace because you are interested conducting research in one or more of these NIH cloud-platform ecosystems. In this tutorial, we are providing examples for how to bring your own data to a Terra workspace and utilize resources from NIH cloud-based platforms that interoperate with Terra -- be it comparing your own data to data provided by an NIH initiative, or computing on your data in a secure platform with access to a rich tools repository.
 
 ## Introduction to BYOD
 
-The question of bringing your own data (BYOD, as we call it) can be complex, so we are breaking it down into parts: First of all, you must get your data into the system in the first place. We call this "Source-to-Bucket," referring to the movement of your files from your BYOD source into the Google Cloud Bucket of your Terra worksapce. Second, once your data is in the system, you will want to learn how to use it in either a Jupyter notebook, or a workflow. We call that part "Bucket-to-Compute."
+The question of bringing your own data (BYOD, as we call it) can be complex, so we are breaking it down into parts: First of all, you must get your data into the system in the first place. We call this "Source-to-Bucket," referring to the movement of your files from your BYOD source into the Google Cloud Bucket of your Terra workspace. Second, once your data is in the system, you will want to learn how to use it in either a Jupyter notebook, or a workflow. We call that part "Bucket-to-Compute."
 
-**Note:** If you wish to import your data in a Jupyter notebook to process it and then pass that output into a workflow, it is easiest to think about it as two separate BYOD problems. The first is for getting your data into your bucket in a way that can be processed by Jupyter notebooks. The second is moving your Jupyter botebook output back into your Google Bucket as the Source-to-Bucket, and setting up your data to run as an input of your workflow is the Bucket-to-Compute part.
+**Note:** If you wish to import your data in a Jupyter notebook to process it and then pass that output into a workflow, it is easiest to think about it as two separate BYOD problems. The first is for getting your data into your bucket in a way that can be processed by Jupyter notebooks. The second is moving your Jupyter notebook output back into your Google Bucket as the Source-to-Bucket, and setting up your data to run as an input of your workflow is the Bucket-to-Compute.
 
 ## Before you begin
 ### File names
@@ -24,11 +24,11 @@ Please keep in mind that any of these characters, if present in your filenames, 
 Please note the "might work" column is **not** a recommendation. The recommendation is for file names to only have the characters A-Z, a-z, 0-9, _, ., and -.
 
 ### Keeping your bucket organized
-For every Source-to-Bucket situation except for 8 (see below), you will be transferring files into your Terra workspace's data section. You may wish to keep this section organized using psuedofolders (strictly speaking gsutil does not have folders). If you are transferring files to your bucket via gsutil (see below), simply add the desired folder name to your `gsutil cp` command, such as `gsutil cp gs://source/file.cram gs://destination/desired_folder_name/file.cram`, to create the desired psuedofolder.
+For every Source-to-Bucket situation except for 8 (see below), you will be transferring files into your Terra workspace's data section. You may wish to keep this section organized using psuedofolders (strictly speaking Google Cloud Storage does not have folders). If you are transferring files to your bucket via gsutil (see below), simply add the desired psuedofolder name to your `gsutil cp` command, such as `gsutil cp gs://source/file.cram gs://destination/desired_psuedofolder_name/file.cram`, to create the desired psuedofolder.
 
 If you are not using gsutil to transfer your files or want to learn more about psuedofolders, you can make use of [a small Jupyter notebook named Psuedofolder Maker](https://github.com/DataBiosphere/BYOD-to-Terra/blob/anvil/Psuedofolder%20Maker.py) that you can run in Terra to create a "psuedofolder" in your Data section. 
 
-If during the Bucket-to-Compute part of your BYOD project, you will be using one of the Jupyter notebooks provided to create a datatable, it is **strongly** recommended that you make use of psuedofolders, because the Bucket-to-Compute notebooks operate on all files within a given psuedofolder.
+If during the Bucket-to-Compute part of your BYOD project, you will be using one of the Jupyter notebooks provided to create a data table, it is **strongly** recommended that you make use of psuedofolders, because the Bucket-to-Compute notebooks operate on all files within a given psuedofolder.
 
 ## Source-to-Bucket
 Depending on where your data is located, your Source-to-Bucket method will vary. Please see the following flow chart for details.
@@ -49,12 +49,12 @@ Please see [Google's instructions for installation](https://cloud.google.com/sto
 #### Copying files over
 First of all, you need to know the Google Cloud Storage "address" of your Terra workspace. You can find this on the Dashboard page of your workspace, below the tags section. You can click the icon of a clipboard to copy the full bucket address.
 
-![Where to find the google bucket address of your workspace](https://github.com/aofarrel/tutorials/blob/master/google_bucket_resized.png?raw=true)
+![Where to find the Google bucket address of your workspace](https://github.com/aofarrel/tutorials/blob/master/google_bucket_resized.png?raw=true)
 
 Next, use `gsutil cp` to move the files to your workspace bucket. Because your files are on your local directory, your source URL will just be the location of your files on your local machine, and your destination will be the gs:// URI of your Terra workspace's GCS bucket. Please see [Google's docs on gsutil cp](https://cloud.google.com/storage/docs/gsutil/commands/cp) for more information.
 
 ### Situation 4: Local machine, using Terra's UI
-Please see ["Option 1" in this article here](https://support.terra.bio/hc/en-us/articles/360024056512-Uploading-to-a-workspace-Google-bucket). Note that if there is an error, Terra will not automatically attempt to reupload, so you may only want to go this route with small files. For large files, consider the solution for Situation 3.
+Please see ["Option 1" in this article here](https://support.terra.bio/hc/en-us/articles/360024056512-Uploading-to-a-workspace-Google-bucket). Note that if there is an error, Terra will not automatically attempt to re-upload, so you may only want to go this route with small files. For large files, consider the solution for Situation 3.
 
 ### Situation 5: Notebook VM using Terra's terminal
 Please see documentation [here](https://hackmd.io/yXS65cyfTUSY8790vZzThw).
