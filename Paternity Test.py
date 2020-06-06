@@ -50,7 +50,7 @@
 
 # ## Imports
 
-# In[ ]:
+# In[10]:
 
 
 import io
@@ -65,11 +65,12 @@ import logging
 
 # ## User-set variables
 
-# In[ ]:
+# In[11]:
 
 
 # Don't forgot the quotation marks!
-SUBDIRECTORY="/thousands/"
+
+SUBDIRECTORY="/thousands/" # Make sure to include slashes
 TABLE_NAME="table_name" #Do not include spaces or underscores
 PARENT_FILETYPE="cram"
 
@@ -85,11 +86,9 @@ PARENT_FILETYPE="cram"
 INCLUDE_PARENT_EXTENSION = True
 
 
-# Make sure to include slashes in your SUBDIRECTORY variable.
-
 # ## Environmental variables
 
-# In[ ]:
+# In[12]:
 
 
 BILLING_PROJECT_ID = os.environ['GOOGLE_PROJECT']
@@ -99,7 +98,7 @@ BUCKET = os.environ["WORKSPACE_BUCKET"]
 
 # ## Call FireCloud
 
-# In[ ]:
+# In[18]:
 
 
 try:
@@ -119,7 +118,7 @@ except NameError:
 # ## Display the contents of your workspace bucket
 # This step is *optional* and you might want to skip it if you have a lot of files in your bucket.
 
-# In[ ]:
+# In[6]:
 
 
 get_ipython().system('gsutil ls $directory')
@@ -130,7 +129,7 @@ get_ipython().system('gsutil ls $directory')
 # ## Delete placeholder file (if you used Psuedofolder Maker)
 # Since there's now other files in the psuedofolder, you can delete the placeholder file that Folder Maker made in order to prevent it from showing up in your TSV.
 
-# In[ ]:
+# In[20]:
 
 
 get_ipython().system('gsutil rm gs${directory}placeholder')
@@ -156,13 +155,13 @@ get_ipython().system('gsutil rm gs${directory}placeholder')
 # ## Option 1: Single Child
 # This will ONLY assign a single child to each parent. Additional children will be ignored. You must write the CHILD_FILETYPE in the cell below.
 
-# In[ ]:
+# In[15]:
 
 
 CHILD_FILETYPE = "crai"
 
 
-# In[ ]:
+# In[16]:
 
 
 # Based on code written by Lon Blauvelt (UCSC)
@@ -172,10 +171,7 @@ google_storage_prefix = 'gs://'
 
 if BUCKET.startswith(google_storage_prefix):
     bucket = BUCKET[len(google_storage_prefix):]  # clip off "gs://" prefix
-if SUBDIRECTORY.startswith("/"):
-    subdirectory_chopped = SUBDIRECTORY[1:len(SUBDIRECTORY)]  # clip off starting /
-if subdirectory_chopped.endswith("/"):
-    subdirectory_chopped = subdirectory_chopped[:len(subdirectory_chopped)-1]  # clip off trailing /
+subdirectory_chopped = SUBDIRECTORY.strip("/")
 i = 0
 with open(TABLE_NAME, 'w') as f:
     header = '\t'.join([f'entity:{TABLE_NAME}_id', 'filename', 'location',
@@ -203,7 +199,7 @@ with open(TABLE_NAME, 'w') as f:
 # ### Check output
 # This is optional and you may want to skip it if you have a lot of files.
 
-# In[ ]:
+# In[17]:
 
 
 with open(TABLE_NAME, 'r') as f:
@@ -224,14 +220,14 @@ get_ipython().system('rm $TABLE_NAME')
 
 # Unlike File Finder or Option 1, this parses the output of `gsutil ls` directly. **As a result, if your filenames contain non-ascii (ie, stuff besides A-Z, a-z, underscores, and dashes) or bizarre characters (ie, newlines) there is a chance this will not work as expected.**
 
-# In[ ]:
+# In[8]:
 
 
 logger = logging.getLogger('')
 logger.setLevel(logging.INFO)
 def baseID(filename_string, child_extension):
-    global PARENT_FILETYPE
-    global INCLUDE_PARENT_EXTENSION
+    PARENT_FILETYPE
+    INCLUDE_PARENT_EXTENSION
     if INCLUDE_PARENT_EXTENSION:
         fileID = filename_string.replace("."+child_extension,"")
     else:
@@ -239,7 +235,7 @@ def baseID(filename_string, child_extension):
     return fileID
 
 # Get location of everything and their file names
-logging.info("Querying Google...")
+logging.info("Querying your GCS bucket for file names...")
 get_ipython().system('gsutil ls $directory > contentlocations.txt')
 logging.info("Processing filenames...")
 get_ipython().system("cat contentlocations.txt | sed 's@.*/@@' > filenames.txt")
@@ -247,14 +243,10 @@ get_ipython().system("cat contentlocations.txt | sed 's@.*/@@' > filenames.txt")
 # Import everything
 logging.info("Constructing dataframe...")
 data={}
-this_file=open("contentlocations.txt", "r")
-lineslocation = this_file.read().splitlines()
-this_file.close()
-that_file=open("filenames.txt", "r")
-linesfilename = that_file.read().splitlines()
-that_file.close()
-data['filename'] = linesfilename
-data['location'] = lineslocation #here in order to put columns in a particular order without reassigning later
+with open("contentlocations.txt", "r") as this_file:
+    data['filename'] = this_file.read().splitlines()
+with open("filenames.txt", "r") as that_file:
+    data['location'] = that_file.read().splitlines()
 
 # Create dataframe
 df = pd.DataFrame(data)
@@ -285,7 +277,6 @@ for child_extension in unique_children: #loop once per child extension
         elif df.at[index_label,'FileType'] == child_extension:
             child_baseID = baseID(row_series['filename'], child_extension)
             df.at[index_label,'ID'] = child_baseID
-            #output_list.update({baseID(row_series['filename'], child_extension) : df.at[index_label,'FileType']})
         else:
             pass
 
@@ -385,7 +376,6 @@ df.to_csv("dataframe.tsv", sep='\t')
 with open('dataframe.tsv', "r+") as file1:
     header = file1.readline()
     everything_else = file1.readlines()
-    file1.close()
 full_header="entity:"+TABLE_NAME+"_id"+header
 with open('final.tsv', "a") as file2:
     file2.write(full_header)
@@ -394,7 +384,6 @@ with open('final.tsv', "a") as file2:
         columns = string.split('\t')
         columns[0] = columns[0].zfill(5)
         file2.write('\t'.join(columns))
-    file2.close()
     
 # Clean up
 response = fapi.upload_entities_tsv(BILLING_PROJECT_ID, WORKSPACE, "final.tsv", "flexible")
