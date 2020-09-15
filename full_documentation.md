@@ -69,11 +69,20 @@ In some cases, you might just be working with a few files. In that situation, yo
 [Please see Google's documentation.](https://cloud.google.com/migrate/compute-engine/docs/4.8/how-to/migrate-aws-to-gcp/migrating-aws-vms)
 
 ## Bucket-to-Compute
-Now that your data is on the system, let's discuss how to actually use it. The route you take depends on whether you want to run a WDL workflow on your files, or to run something within a Jupyter notebook on yur files.
+Now that your data is on the system, let's discuss how to actually use it. The route you take depends on whether you want to run a WDL workflow on your files, or to run something within a Jupyter notebook on your files.
 
 ### Situation A: WDL workflow using gs:// URI
+Using the Google Cloud Bucket address that your files now reside in, you can simply enter that address as an input into your workflow. [Terra's pipeline documentation](https://support.terra.bio/hc/en-us/articles/360026521831-Configure-a-workflow-to-process-your-data#h_d8435f57-4713-40c5-b5af-150f1872057f) explains how this is done. Remember, you can click on a file in Terra's data section to view it's full GCS address by just examining the `gsutil cp` command provided. You will likely have to scroll to read the full address.
+
+![Image of a file in Terra's data section with its gs URI circled in green](https://raw.githubusercontent.com/DataBiosphere/BYOD-to-Terra/anvil/getting%20file%20address.png)
 
 ### Situation B: WDL workflow by creating data tables with the BYOD suite
+Using the notebooks provided in this repo, you can create data tables that point to the location of your files. If you have used data tables in Terra before, you are likely familiar with their overall structure and their utility. As a simple example, let's say you uploaded 5 CRAMs to your workspace bucket. Using the notebook File Finder will give you a Terra data table with this structure:
+![A table with five rows and two columns. The first column represents file names. The second column is for the location of those files, represented by a hyperlink.](https://raw.githubusercontent.com/DataBiosphere/BYOD-to-Terra/anvil/file%20finder%20cram%20table.png)
+
+Although the second column looks like it just contains the file name on Terra's UI, cells in that column actually have the full gs URI of the file. If you click on the hyperlink in Terra's view of this data table, a popup showing where the gs URI of the file will appear.
+
+When running a workflow on Terra, you have the option of using the contents of data table's column as an input in your workflow. This is the use case for which the BYDO suite was designed. If you need information on how to use data tables as workflow inputs, [please see Terra's documentation here](https://support.terra.bio/hc/en-us/articles/360026521831-Configure-a-workflow-to-process-your-data#h_602a754c-7e8d-4cc2-8a0b-6deef92b2f85).
 
 ### Situation C: Jupyter
 Jupyter notebooks exist in a virtual machine on Terra, so depending on how your notebook is set up, you might need to transfer your files into the notebook VM. Please note that these instructions are focused on moving actual files into a notebook VM; if you wish to parse data tables instead, check out [terra-notebook-utils](https://github.com/DataBiosphere/terra-notebook-utils), which can parse dataframes by converting them to pandas dataframes.
